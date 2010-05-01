@@ -12,6 +12,7 @@ import j2DbParser.utils.IterableDecorator;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Parser insert data from file into database. It uses In-Memory database and
@@ -53,8 +54,13 @@ public class ParserLive {
 		for (String s : new IterableDecorator<String>(reader)) {
 			System.out.println(s);
 			if (s.toLowerCase().startsWith("select")) {
-				ResultSet resultSet = database.query(s);
-				viewer.show(resultSet);
+				ResultSet resultSet;
+				try {
+					resultSet = database.query(s);
+					viewer.show(resultSet);
+				} catch (SQLException e) {
+					System.err.println(e.getMessage());
+				}
 			}
 		}
 		database.stop();

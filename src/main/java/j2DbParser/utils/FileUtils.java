@@ -1,6 +1,7 @@
 package j2DbParser.utils;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,9 +15,9 @@ public class FileUtils {
 	private static final int DEFAULT_LIST_READ_CAPACITY = 50000;
 	private static final String ENCODING_ISO = "ISO-8859-2";
 
-	public static Map<String, String> file2Map(String filename) {
-		final List<String> list = file2CollectionMockable(filename,
-				ENCODING_ISO);
+	public static Map<String, String> file2Map(String filename)
+			throws FileNotFoundException {
+		final List<String> list = file2List(filename, ENCODING_ISO);
 		final Map<String, String> map = new LinkedHashMap<String, String>(list
 				.size());
 		for (String line : list) {
@@ -30,8 +31,8 @@ public class FileUtils {
 		return map;
 	}
 
-	public static List<String> file2CollectionMockable(final String filename,
-			final String codepage) {
+	public static List<String> file2List(final String filename,
+			final String codepage) throws FileNotFoundException {
 		Scanner scan = null;
 		try {
 			scan = new Scanner(new FileInputStream(filename).getChannel(),
@@ -42,8 +43,6 @@ public class FileUtils {
 				list.add(scan.nextLine());
 			}
 			return list;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
 		} finally {
 			if (scan != null) {
 				scan.close();

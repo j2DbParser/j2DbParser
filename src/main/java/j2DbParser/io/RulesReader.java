@@ -2,6 +2,7 @@ package j2DbParser.io;
 
 import j2DbParser.utils.FileUtils;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
@@ -19,7 +20,13 @@ public class RulesReader {
 	}
 
 	private Map readRules(String rulesFile) {
-		return FileUtils.file2Map(rulesFile);
+		try {
+			return FileUtils.file2Map(rulesFile);
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
+			System.exit(0);
+			return null;
+		}
 	}
 
 	public Map<String, String> getRulesMap() {

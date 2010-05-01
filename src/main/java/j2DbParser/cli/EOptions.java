@@ -7,7 +7,7 @@ import org.apache.commons.cli.OptionBuilder;
 /**
  * Console options. single thread only. Arguments are stored in static field
  * {@link EOptions#commandLine}. It might not be the coolest solution, but
- * coolest than passing {@link CommandLine} as method {@link EOptions#value()}
+ * cooler than passing {@link CommandLine} as method {@link EOptions#value()}
  * parameter.
  */
 @SuppressWarnings("static-access")
