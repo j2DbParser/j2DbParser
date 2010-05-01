@@ -1,0 +1,30 @@
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>console</headerType>
+  <jar>target\j2DbParse-0.0.1-SNAPSHOT.jar</jar>
+  <outfile>J:\workspace\j2DbParse\parser-0.0.1-SNAPSHOT.exe</outfile>
+  <errTitle>You DO need java to run this application !!!</errTitle>
+  <cmdLine></cmdLine>
+  <chdir></chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <customProcName>false</customProcName>
+  <stayAlive>false</stayAlive>
+  <manifest></manifest>
+  <icon></icon>
+  <classPath>
+    <mainClass>j2DbParser.cli.Parser</mainClass>
+    <cp>j:\.m2\repository\commons-cli\commons-cli\1.2\commons-cli-1.2.jar</cp>
+    <cp>j:\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar</cp>
+    <cp>J:\.m2\repository\hsqldb\hsqldb\1.8.0.10\hsqldb-1.8.0.10.jar</cp>
+    <cp>J:\.m2\repository\com\google\collections\google-collections\1.0\google-collections-1.0.jar</cp>
+    <cp>J:\.m2\repository\cglib\cglib-nodep\2.1_3\cglib-nodep-2.1_3.jar</cp>
+  </classPath>
+  <jre>
+    <path></path>
+    <minVersion>1.5.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+  </jre>
+</launch4jConfig>
