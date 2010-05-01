@@ -1,0 +1,20 @@
+INTEGER | INT	as Java type	int | java.lang.Integer
+DOUBLE [PRECISION] | FLOAT	as Java type	double | java.lang.Double
+VARCHAR	as Integer.MAXVALUE	java.lang.String
+VARCHAR_IGNORECASE	as Integer.MAXVALUE	java.lang.String
+CHAR | CHARACTER	as Integer.MAXVALUE	java.lang.String
+LONGVARCHAR	as Integer.MAXVALUE	java.lang.String
+DATE	as Java type	java.sql.Date
+TIME	as Java type	java.sql.Time
+TIMESTAMP | DATETIME	as Java type	java.sql.Timestamp
+DECIMAL	No limit	java.math.BigDecimal
+NUMERIC	No limit	java.math.BigDecimal
+BOOLEAN | BIT	as Java type	boolean | java.lang.Boolean
+TINYINT	as Java type	byte | java.lang.Byte
+SMALLINT	as Java type	short | java.lang.Short
+BIGINT	as Java type	long | java.lang.Long
+REAL	as Java type	double | java.lang.Double[2]
+BINARY	as Integer.MAXVALUE	byte[]
+VARBINARY	as Integer.MAXVALUE	byte[]
+LONGVARBINARY	as Integer.MAXVALUE	byte[]
+OTHER | OBJECT	as Integer.MAXVALUE	java.lang.Object

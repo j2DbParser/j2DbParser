@@ -1,0 +1,1 @@
+git remote add origin git@github.com:j2DbParser/j2DbParser.git
