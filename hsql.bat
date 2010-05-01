@@ -1,1 +1,0 @@
-java -jar C:\1\hsqldb-2.0.0-rc9\lib\hsqldb.jar

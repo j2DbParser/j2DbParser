@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>console</headerType>
-  <jar>target\j2DbParse-0.0.1-SNAPSHOT.jar</jar>
-  <outfile>J:\workspace\j2DbParse\parserLive-0.0.1-SNAPSHOT.exe</outfile>
+  <jar>target\j2DbParse-0.0.2.jar</jar>
+  <outfile>J:\workspace\j2DbParse\parserLive.exe</outfile>
   <errTitle>You DO need java to run this application !!!</errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
