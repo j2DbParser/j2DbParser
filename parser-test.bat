@@ -1,2 +1,2 @@
-rem parser-0.0.1-SNAPSHOT.exe -f example.log -r example.rules.properties
-parserLive-0.0.1-SNAPSHOT.exe -f example.log -r example.rules.properties
+rem parser.exe -f example.log -r example.rules.properties
+parserLive.exe -f example.log -r example.rules.properties

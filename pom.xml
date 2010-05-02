@@ -51,17 +51,36 @@
 					</execution>
 				</executions>
 			</plugin>
-           <plugin>
-               <artifactId>maven-assembly-plugin</artifactId>
-               <version>2.0.1</version>
-               <configuration>
-                   <descriptors>
-                       <descriptor>src/main/assembly/withJars.xml</descriptor>
-					   <descriptor>src/main/assembly/withoutJars.xml</descriptor>
-                   </descriptors>
-                   <finalName>${artifactId}-${version}</finalName>
-               </configuration>
-           </plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.0.1</version>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/withJars.xml</descriptor>
+						<descriptor>src/main/assembly/withoutJars.xml</descriptor>
+					</descriptors>
+					<finalName>${artifactId}-${version}</finalName>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>launch4j-plugin</groupId>
+				<artifactId>launch4j-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>exe</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<launch4jHome>C:\Program Files\Launch4j\launch4j.exe</launch4jHome>
+					<configs>
+						<param>src/main/assembly/configParser.xml</param>
+						<param>src/main/assembly/configParserLive.xml</param>
+					</configs>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
