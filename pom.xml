@@ -63,8 +63,9 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>launch4j-plugin</groupId>
-				<artifactId>launch4j-plugin</artifactId>
+				<groupId>launch4j-xml-plugin</groupId>
+				<artifactId>launch4j-xml-plugin</artifactId>
+				<version>1.0.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
