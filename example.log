@@ -1,11 +1,6 @@
 2010-03-19 14:30:01,341 INFO  [org.quartz.impl.StdSchedulerFactory] Quartz scheduler version: 1.5.2
 2010-03-19 14:30:01,341 INFO  [org.quartz.core.QuartzScheduler] Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
-2010-03-19 14:30:01,466 INFO  [org.jboss.resource.connectionmanager.ConnectionFactoryBindingService] Bound ConnectionManager 'jboss.jca:service=DataSourceBinding,name=BigDS' to JNDI name 'java:BigDS'
-2010-03-19 14:30:02,232 INFO  [org.jboss.resource.connectionmanager.ConnectionFactoryBindingService] Bound ConnectionManager 'jboss.jca:service=DataSourceBinding,name=DefaultDS' to JNDI name 'java:DefaultDS'
-2010-03-19 14:30:02,622 INFO  [org.jboss.resource.connectionmanager.ConnectionFactoryBindingService] Bound ConnectionManager 'jboss.jca:service=DataSourceBinding,name=JbpmDS' to JNDI name 'java:JbpmDS'
-2010-03-19 14:30:02,701 INFO  [org.jboss.resource.connectionmanager.ConnectionFactoryBindingService] Bound ConnectionManager 'jboss.jca:service=DataSourceBinding,name=OracleJPrintOutDS' to JNDI name 'java:OracleJPrintOutDS'
 2010-03-19 14:30:02,732 INFO  [org.jboss.web.tomcat.service.TomcatDeployer] deploy, ctxPath=/jmx-console, warUrl=.../deploy/jmx-console.war/
-2010-03-19 14:30:05,076 INFO  [org.jboss.web.tomcat.service.TomcatDeployer] deploy, ctxPath=/ted, warUrl=.../tmp/deploy/tmp64321ted-exp.war/
 2010-03-19 14:30:11,747 INFO  [javax.servlet.ServletContextListener] Welcome to Seam 2.1.2
 2010-03-19 14:30:14,935 INFO  [org.jboss.seam.init.Initialization] reading /WEB-INF/components.xml
 2010-03-19 14:30:15,154 INFO  [org.jboss.seam.init.Initialization] reading properties from: /seam.properties
