@@ -1,9 +1,9 @@
-2010-03-19 14:30:01,341 INFO  [org.quartz.impl.StdSchedulerFactory] Quartz scheduler version: 1.5.2
-2010-03-19 14:30:01,341 INFO  [org.quartz.core.QuartzScheduler] Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
-2010-03-19 14:30:02,732 INFO  [org.jboss.web.tomcat.service.TomcatDeployer] deploy, ctxPath=/jmx-console, warUrl=.../deploy/jmx-console.war/
-2010-03-19 14:30:11,747 INFO  [javax.servlet.ServletContextListener] Welcome to Seam 2.1.2
-2010-03-19 14:30:14,935 INFO  [org.jboss.seam.init.Initialization] reading /WEB-INF/components.xml
-2010-03-19 14:30:15,154 INFO  [org.jboss.seam.init.Initialization] reading properties from: /seam.properties
-2010-03-19 14:30:15,154 INFO  [org.jboss.seam.init.Initialization] reading properties from: /jndi.properties
-2010-03-19 14:30:15,247 INFO  [org.jboss.seam.Component] Component: org.jboss.seam.core.init, scope: APPLICATION, type: JAVA_BEAN, class: org.jboss.seam.core.Init
-2010-03-19 14:30:15,294 INFO  [org.jboss.seam.init.Initialization] two components with same name, higher precedence wins: org.jboss.seam.navigation.pages
+2010-05-03 14:30:01,341 INFO  [org.quartz.impl.StdSchedulerFactory] Quartz scheduler version: 1.5.2
+2010-05-03 14:30:01,341 INFO  [org.quartz.core.QuartzScheduler] Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+2010-05-03 14:30:02,732 INFO  [org.jboss.web.tomcat.service.TomcatDeployer] deploy, ctxPath=/jmx-console, warUrl=.../deploy/jmx-console.war/
+2010-05-03 14:30:11,747 INFO  [javax.servlet.ServletContextListener] Welcome to Seam 2.1.2
+2010-05-03 14:30:14,935 INFO  [org.jboss.seam.init.Initialization] reading /WEB-INF/components.xml
+2010-05-03 14:30:15,154 DEBUG  [org.jboss.seam.init.Initialization] reading properties from: /seam.properties
+2010-05-03 14:30:15,154 INFO  [org.jboss.seam.init.Initialization] reading properties from: /jndi.properties
+2010-05-03 14:30:15,247 INFO  [org.jboss.seam.Component] Component: org.jboss.seam.core.init, scope: APPLICATION, type: JAVA_BEAN, class: org.jboss.seam.core.Init
+2010-05-03 14:30:15,294 WARN  [org.jboss.seam.init.Initialization] two components with same name, higher precedence wins: org.jboss.seam.navigation.pages
