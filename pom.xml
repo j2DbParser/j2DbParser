@@ -56,8 +56,7 @@
 				<version>2.0.1</version>
 				<configuration>
 					<descriptors>
-						<descriptor>src/main/assembly/withJars.xml</descriptor>
-						<descriptor>src/main/assembly/withoutJars.xml</descriptor>
+						<descriptor>src/main/assembly/distro.xml</descriptor>
 					</descriptors>
 					<finalName>${artifactId}-${version}</finalName>
 				</configuration>
