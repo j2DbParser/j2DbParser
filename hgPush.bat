@@ -1,3 +1,3 @@
 call hg add
-call hg commit -m "My changes"
+call hg commit -m "%1"
 call hg push
