@@ -8,6 +8,7 @@
        <fileSet>
            <includes>
 			   <include>example*.*</include>
+			   <include>rules.ini</include>
            </includes>
        </fileSet>
        <fileSet>

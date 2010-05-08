@@ -55,7 +55,7 @@ public class CommandLineSupport {
 	private void checkGroups() {
 		if (VERSION.has()) {
 			// TODO: finish
-			String v = "Parser 0.0.3 (r801777; 2009-08-06 21:16:01+0200)";
+			String v = "Parser 0.0.3 (2010-05-08 19:48:00)";
 			System.out.println(v);
 			stop();
 		}
