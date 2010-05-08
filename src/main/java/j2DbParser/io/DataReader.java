@@ -1,5 +1,7 @@
 package j2DbParser.io;
 
+import j2DbParser.system.StopperSingleton;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,8 +20,8 @@ public class DataReader implements IDataReader {
 	public DataReader(String logFile) {
 		this.logFile = logFile;
 		if (logFile != null && !new File(logFile).canRead()) {
-			System.err.println("Could not read the file " + logFile);
-			System.exit(0);
+			StopperSingleton.getInstance().stop(
+					"Could not read the file " + logFile);
 		}
 	}
 
@@ -31,8 +33,7 @@ public class DataReader implements IDataReader {
 			try {
 				scanner = initScanner();
 			} catch (FileNotFoundException e) {
-				System.err.println(e.getMessage());
-				System.exit(0);
+				StopperSingleton.getInstance().stop(e);
 				return false;
 			}
 		}

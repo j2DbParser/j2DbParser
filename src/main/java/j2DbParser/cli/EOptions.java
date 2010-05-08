@@ -1,5 +1,10 @@
 package j2DbParser.cli;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
@@ -25,19 +30,32 @@ public enum EOptions {
 			return "example.log";
 		}
 	},
-	RULES_FILE("r") {
+	RULE_NAME("r") {
 		@Override
 		public Option getOption() {
-			return OptionBuilder.withArgName("filename").hasArg()
-					.withDescription("processing rules file").withLongOpt(
-							"rules").isRequired(true).create(name);
+			return OptionBuilder.withArgName("ruleName").hasArg()
+					.withDescription("name of section in rules.ini")
+					.withLongOpt("rule").isRequired(true).create(name);
 		}
 
 		@Override
 		public String exampleValue() {
-			return "example.rules.properties";
+			return "log"; // ini section
 		}
 	},
+	VERSION("v") {
+		@Override
+		public Option getOption() {
+			return OptionBuilder.withDescription("version of application")
+					.withLongOpt("version").isRequired(false).create(name);
+		}
+
+		@Override
+		public String exampleValue() {
+			return null;
+		}
+	},
+
 	// TODO: implement
 	TREAT_AS("ta") {
 		@Override
@@ -68,7 +86,9 @@ public enum EOptions {
 	// TODO: stuff from Config
 	;
 	public static CommandLine commandLine;
+	public static Set<EOptions> chosen;
 	public final String name;
+	private String paramValue;
 
 	private EOptions(String name) {
 		this.name = name;
@@ -77,7 +97,24 @@ public enum EOptions {
 	abstract public Option getOption();
 
 	public String value() {
+		if (chosen == null) {
+			chosen = getChosenOptions();
+		}
 		return commandLine.getOptionValue(name);
+	}
+
+	private Set<EOptions> getChosenOptions() {
+		Set<EOptions> set = new HashSet<EOptions>();
+		Iterator<Option> iterator = commandLine.iterator();
+		while (iterator.hasNext()) {
+			Option next = iterator.next();
+			for (EOptions e : values()) {
+				if (e.getOption().equals(next)) {
+					set.add(e);
+				}
+			}
+		}
+		return set;
 	}
 
 	public Integer valueInt() {
@@ -89,7 +126,10 @@ public enum EOptions {
 	}
 
 	public boolean has() {
-		return value() != null;
+		if (chosen == null) {
+			chosen = getChosenOptions();
+		}
+		return chosen.contains(this);
 	}
 
 	public String exampleValue() {
@@ -97,13 +137,25 @@ public enum EOptions {
 	}
 
 	public static String[] example(EOptions... options) {
-		String[] s = new String[options.length * 2];
+		String[] as = new String[options.length * 2];
 		int i = 0;
+		int smallDown = 0;
 		for (EOptions e : options) {
-			s[i++] = "-" + e.name;
-			s[i++] = e.exampleValue();
+			as[i++] = "-" + e.name;
+
+			String paramVal = e.paramValue;
+			String exampleValue = paramVal != null ? paramVal : e
+					.exampleValue();
+			if (exampleValue != null) {
+				as[i++] = exampleValue;
+			} else {
+				smallDown++;
+			}
 		}
-		return s;
+		if (smallDown > 0) {
+			as = Arrays.copyOf(as, as.length - smallDown);
+		}
+		return as;
 	}
 
 	public static void show() {
@@ -111,5 +163,10 @@ public enum EOptions {
 			System.out.println(e);
 			System.out.println("\t" + e.value());
 		}
+	}
+
+	public EOptions setParamValue(String paramValue) {
+		this.paramValue = paramValue;
+		return this;
 	}
 }

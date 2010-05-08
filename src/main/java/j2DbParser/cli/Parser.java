@@ -1,7 +1,7 @@
 package j2DbParser.cli;
 
 import static j2DbParser.cli.EOptions.FILE;
-import static j2DbParser.cli.EOptions.RULES_FILE;
+import static j2DbParser.cli.EOptions.RULE_NAME;
 import j2DbParser.Config;
 import j2DbParser.db.HsqlDatabase;
 import j2DbParser.db.IDatabase;
@@ -9,6 +9,7 @@ import j2DbParser.db.SqlColumn;
 import j2DbParser.db.SqlDatabase;
 import j2DbParser.io.DataReader;
 import j2DbParser.io.RulesReader;
+import j2DbParser.system.LogFactory;
 import j2DbParser.utils.IterableDecorator;
 
 import java.io.IOException;
@@ -24,7 +25,7 @@ import java.util.regex.Matcher;
 public class Parser {
 	private static final String EXEC_NAME = "parser";
 
-	private static final Logger log = Logger.getLogger(Parser.class.getName());
+	private static final Logger log = LogFactory.getLogger(Parser.class);
 	// TODO: configure the damn logger
 
 	public Config config = new Config();
@@ -32,24 +33,19 @@ public class Parser {
 	public RulesReader rules;
 	public DataReader reader;
 
-	public Parser(String logFile, String rulesFile) throws IOException {
-		rules = new RulesReader(rulesFile);
+	public Parser(String logFile, String ruleName) throws IOException {
+		rules = new RulesReader(ruleName);
 		reader = new DataReader(logFile);
 	}
 
 	public static void main(String[] args) throws Exception {
-		if (false) {
-			args = EOptions.example(FILE, RULES_FILE);
-			// args = EOptions.example(FILE, RULES_FILE, TREAT_AS);
-		} else {
-			// args = EOptions.example(RULES_FILE);
-		}
+		init(args);
+	}
 
-		boolean stop = new CommandLineSupport(EXEC_NAME, args).parse();
-		if (stop) {
-			return;
-		}
-		String rulesFile = RULES_FILE.value();
+	public static void init(String[] args) throws Exception, IOException {
+		new CommandLineSupport(EXEC_NAME, args).parse();
+
+		String rulesFile = RULE_NAME.value();
 		String logFile = FILE.value();
 		new Parser(logFile, rulesFile).start();
 	}
@@ -62,6 +58,7 @@ public class Parser {
 		showSelects(db);
 		// database.stop();
 
+		Thread.sleep(100);
 		System.out.println("\nYou can now connect to database - "
 				+ database.getUrl());
 	}

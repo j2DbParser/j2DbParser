@@ -8,7 +8,7 @@
 	<description>Java 2 Database Parser</description>
 	<inceptionYear>2010</inceptionYear>
 	<properties>
-		<maven.version>2.2.1</maven.version>
+
 	</properties>
 	<developers>
 		<developer>
@@ -47,8 +47,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -147,9 +147,9 @@
 			<version>4.8.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-plugin-api</artifactId>
-			<version>${maven.version}</version>
+			<groupId>org.ini4j</groupId>
+			<artifactId>ini4j</artifactId>
+			<version>0.5.1</version>
 		</dependency>
 	</dependencies>
 	<repositories>

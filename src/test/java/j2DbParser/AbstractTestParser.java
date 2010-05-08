@@ -6,7 +6,6 @@ import static org.easymock.classextension.EasyMock.createStrictMock;
 import static org.easymock.classextension.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import j2DbParser.cli.Parser;
-import j2DbParser.cli.ParserStartTest;
 import j2DbParser.db.IDatabase;
 import j2DbParser.db.SqlDatabase;
 import j2DbParser.io.DataReader;
@@ -18,11 +17,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
@@ -77,7 +76,7 @@ public class AbstractTestParser {
 		}
 	}
 
-	protected void testStart(RulesReader rules, String source,
+	protected void testLog(RulesReader rules, String source,
 			SqlInsertObserverAssert asserts) throws Throwable {
 		try {
 			IDatabase database = createStrictMock(IDatabase.class);
@@ -137,9 +136,7 @@ public class AbstractTestParser {
 	}
 
 	protected RulesReader getExampleRules() throws IOException {
-		RulesReader rules = new RulesReader(ParserStartTest.class.getResource(
-				"example-rules.properties").getFile());
-		return rules;
+		return new RulesReader("log");
 	}
 
 }

@@ -1,9 +1,14 @@
 package j2DbParser.cli;
 
 import static j2DbParser.cli.EOptions.FILE;
-import static j2DbParser.cli.EOptions.RULES_FILE;
+import static j2DbParser.cli.EOptions.RULE_NAME;
+import static j2DbParser.cli.EOptions.VERSION;
+import j2DbParser.system.StopperSingleton;
+
+import java.util.Arrays;
 
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
@@ -15,6 +20,7 @@ import org.apache.commons.cli.PosixParser;
  * @see http://commons.apache.org/cli/
  */
 public class CommandLineSupport {
+
 	private final String exeName;
 	private final String[] args;
 
@@ -28,20 +34,35 @@ public class CommandLineSupport {
 	 * 
 	 * @return true if you should not continue
 	 */
-	public boolean parse() {
-		// System.out.println("main(" + Arrays.toString(args) + ")");
+	public void parse() {
+		System.out.println("main(" + Arrays.toString(args) + ")");
 		Options options = getOptions();
 		if (args.length == 0) {
 			new HelpFormatter().printHelp(exeName, options, true);
-			return true;
+			stop();
 		}
 		try {
 			EOptions.commandLine = getCliParser().parse(options, args);
 		} catch (ParseException e) {
 			System.err.println(e.getMessage());
-			return true;
+			stop();
 		}
-		return false;
+		// options.hasOption("v")
+
+		checkGroups();
+	}
+
+	private void checkGroups() {
+		if (VERSION.has()) {
+			// TODO: finish
+			String v = "Parser 0.0.3 (r801777; 2009-08-06 21:16:01+0200)";
+			System.out.println(v);
+			stop();
+		}
+	}
+
+	private void stop() {
+		StopperSingleton.getInstance().stop();
 	}
 
 	protected PosixParser getCliParser() {
@@ -56,20 +77,43 @@ public class CommandLineSupport {
 	 * @return options options
 	 */
 	protected Options getOptions() {
-		Options options = new Options();
+		final Options options = new Options();
 
-		// OptionGroup required = new OptionGroup();
-		// required.addOption(NAME.getOption());
-		// required.setRequired(true);
-		// options.addOptionGroup(required);
+		EOptions[] op = { FILE, RULE_NAME };
 
-		EOptions[] op = { FILE, RULES_FILE
-		// , TREAT_AS
-		};
-		for (EOptions e : op) {
-			options.addOption(e.getOption());
-		}
+		ver1(options, op);
+		// ver2(options, op);
+
+		// in OptionGroup = mutually exclusive options
+
+		OptionGroup versionGroup = new OptionGroup();
+		versionGroup.setRequired(false);
+		versionGroup.addOption(VERSION.getOption());
+
+		options.addOptionGroup(versionGroup);
 		return options;
+	}
+
+	@Deprecated
+	public void ver2(final Options options, EOptions[] op) {
+		// main([-f, example.log, -r, example])
+		// The option 'r' was specified but an option from this group has
+		// already been selected: 'f'
+		OptionGroup group = new OptionGroup();
+		group.setRequired(false);
+		for (EOptions e : op) {
+			group.addOption(e.getOption());
+		}
+		options.addOptionGroup(group);
+	}
+
+	private void ver1(final Options options, EOptions[] op) {
+		for (EOptions e : op) {
+			OptionGroup group = new OptionGroup();
+			group.setRequired(false);
+			group.addOption(e.getOption());
+			options.addOptionGroup(group);
+		}
 	}
 
 }

@@ -2,6 +2,7 @@ package j2DbParser.db;
 
 import j2DbParser.Config;
 import j2DbParser.cli.Parser;
+import j2DbParser.system.LogFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,7 +24,7 @@ import org.hsqldb.Server;
  */
 public class HsqlDatabase implements IDatabase {
 
-	private static final Logger log = Logger.getLogger(Parser.class.getName());
+	private static final Logger log = LogFactory.getLogger(Parser.class);
 
 	private final Config config;
 	private Connection con;

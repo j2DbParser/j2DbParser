@@ -22,7 +22,7 @@ public class ResultSetSimpleViewer implements IResultSetViewer {
 			columnName = StringUtils.rightPad(columnName, DEFAULT_COLUMN_SIZE, ' ');
 			b.append(columnName);
 		}
-		System.out.println(b.toString());
+		System.out.println(b.toString().trim());
 
 		while (resultSet.next()) {
 			final StringBuilder sb = new StringBuilder();
@@ -32,7 +32,7 @@ public class ResultSetSimpleViewer implements IResultSetViewer {
 				ns = StringUtils.rightPad(ns, 70, ' ');
 				sb.append(ns);
 			}
-			System.out.println(sb.toString());
+			System.out.println(sb.toString().trim());
 		}
 	}
 }

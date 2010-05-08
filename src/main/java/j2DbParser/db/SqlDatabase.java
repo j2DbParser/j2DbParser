@@ -1,6 +1,7 @@
 package j2DbParser.db;
 
 import j2DbParser.io.RulesReader;
+import j2DbParser.system.LogFactory;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -13,8 +14,7 @@ import org.apache.commons.lang.StringUtils;
 
 public class SqlDatabase {
 
-	private static final Logger log = Logger.getLogger(SqlDatabase.class
-			.getName());
+	private static final Logger log = LogFactory.getLogger(SqlDatabase.class);
 
 	private final Map<String, Set<SqlColumn>> map;
 

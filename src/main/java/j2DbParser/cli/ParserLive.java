@@ -1,7 +1,7 @@
 package j2DbParser.cli;
 
 import static j2DbParser.cli.EOptions.FILE;
-import static j2DbParser.cli.EOptions.RULES_FILE;
+import static j2DbParser.cli.EOptions.RULE_NAME;
 import j2DbParser.db.IDatabase;
 import j2DbParser.db.SqlDatabase;
 import j2DbParser.db.viewer.IResultSetViewer;
@@ -27,20 +27,11 @@ public class ParserLive {
 	public IDataReader reader = new DataReaderSystemIn();
 
 	public static void main(String[] args) throws Exception {
-		if (false) {
-			args = EOptions.example(FILE, RULES_FILE);
-			// args = EOptions.example(FILE, RULES_FILE, TREAT_AS);
-		} else {
-			// args = EOptions.example(RULES_FILE);
-		}
 		new ParserLive().start(args);
 	}
 
 	public void start(String[] args) throws Exception {
-		boolean stop = new CommandLineSupport(EXE_NAME, args).parse();
-		if (stop) {
-			return;
-		}
+		new CommandLineSupport(EXE_NAME, args).parse();
 
 		// EOptions.show();
 		Parser parser = getParser();
@@ -67,7 +58,7 @@ public class ParserLive {
 	}
 
 	protected Parser getParser() throws IOException {
-		return new Parser(FILE.value(), RULES_FILE.value());
+		return new Parser(FILE.value(), RULE_NAME.value());
 	}
 
 }

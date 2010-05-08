@@ -8,7 +8,6 @@ import java.util.Map;
  * Database actions
  */
 public interface IDatabase {
-
 	void start() throws Exception;
 
 	void closeConnection() throws Exception;
@@ -26,5 +25,4 @@ public interface IDatabase {
 	void setUseInMemory(boolean useInMemory);
 
 	String getUrl();
-
 }
