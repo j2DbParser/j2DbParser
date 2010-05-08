@@ -7,3 +7,4 @@
 2010-05-03 14:30:15,154 INFO  [org.jboss.seam.init.Initialization] reading properties from: /jndi.properties
 2010-05-03 14:30:15,247 INFO  [org.jboss.seam.Component] Component: org.jboss.seam.core.init, scope: APPLICATION, type: JAVA_BEAN, class: org.jboss.seam.core.Init
 2010-05-03 14:30:15,294 WARN  [org.jboss.seam.init.Initialization] two components with same name, higher precedence wins: org.jboss.seam.navigation.pages
+2010-05-03 14:31:01,341 INFO  [org.quartz.impl.StdSchedulerFactory] Quartz scheduler version: 1.5.2
