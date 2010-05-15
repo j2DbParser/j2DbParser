@@ -1,0 +1,5 @@
+j2DbParser.hooks.impl.LogPostCreateTable
+j2DbParser.hooks.impl.SamplePostCreateTables
+j2DbParser.hooks.impl.LogFirstPostInsert
+j2DbParser.hooks.impl.MaxInsertPostInsert
+j2DbParser.hooks.impl.SimplePostInserts
