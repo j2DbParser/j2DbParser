@@ -53,7 +53,7 @@ public class XPathAttributeTest {
 
 	@Test
 	public void moreThanOneAt() throws Exception {
-		String xpath = "/configSingleton/item/fun/@hah/@id";
+		String xpath = "/config/item/fun/@hah/@id";
 		String[] xpaths = { xpath };
 		String file = EXAMPLE_XML;
 		try {
