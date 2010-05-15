@@ -12,6 +12,9 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class NodeList implements Iterable<Node> {
+	private static final int SPLIT_BEGIN_IGNORE_ELEMENTS = 1;
+	private static final boolean DEBUG_IS = false;
+	public static final boolean DEBUG_SPLIT = false;
 	public Node[] nodes;
 	private int current;
 	public final String xpath;
@@ -24,22 +27,31 @@ public class NodeList implements Iterable<Node> {
 		if (xpathExpr == null) {
 			throw new IllegalArgumentException("xpathExpre must not be null");
 		}
-		if (!xpathExpr.startsWith("//")) {
+		if (xpathExpr.startsWith("//")) {
 			throw new IllegalArgumentException(
-					"xpathExpre must starts with \"//\", it was " + xpathExpr);
+					"xpathExpre should not start with \"//\", it was "
+							+ xpathExpr);
 		}
 		this.xpath = xpathExpr;
 		String[] split = xpathExpr.split("/");
 
 		int length = split.length;
-		int nodeArrayLength = length - 2;
+		int nodeArrayLength = length - SPLIT_BEGIN_IGNORE_ELEMENTS;
 		if (nodeArrayLength <= 0) {
 			throw new IllegalArgumentException(
 					"nodeArrayLength must be larger than 0");
 		}
 		nodes = new Node[nodeArrayLength];
+
+		if (DEBUG_SPLIT) {
+			for (int i = 0; i < split.length; i++) {
+				String string = split[i];
+				System.out.println(i + ")" + string);
+			}
+		}
+
 		int j = 0;
-		for (int i = 2; i < length; i++) {
+		for (int i = SPLIT_BEGIN_IGNORE_ELEMENTS; i < length; i++) {
 			String s = split[i];
 			boolean attr = false;
 			if (s.startsWith("@")) {
@@ -94,15 +106,13 @@ public class NodeList implements Iterable<Node> {
 
 	public boolean is(LinkedList<String> location) {
 		String[] array = location.toArray(new String[location.size()]);
-		if (false) {
+		boolean equals = Arrays.equals(array, as);
+		if (DEBUG_IS) {
 			System.out.println("nodeNameArray=" + Arrays.toString(as));
 			System.out.println("array=" + Arrays.toString(array));
+			System.out.println("equals=" + equals);
 		}
-		if (Arrays.equals(array, as)) {
-			// System.out.println("--------------");
-			return true;
-		}
-		return false;
+		return equals;
 	}
 
 }

@@ -18,7 +18,7 @@ public class XPathAttributeTest {
 
 	@Test
 	public void single() throws Exception {
-		String xpath = "//config/item/@date";
+		String xpath = "/config/item/@date";
 		String[] xpaths = { xpath };
 		String file = EXAMPLE_XML;
 		ListMultimap<String, String> map = parse(xpaths, file);
@@ -36,7 +36,7 @@ public class XPathAttributeTest {
 
 	@Test
 	public void singleFar() throws Exception {
-		String xpath = "//config/item/fun/hah/@id";
+		String xpath = "/config/item/fun/hah/@id";
 		String[] xpaths = { xpath };
 		String file = EXAMPLE_XML;
 		ListMultimap<String, String> map = parse(xpaths, file);
@@ -53,7 +53,7 @@ public class XPathAttributeTest {
 
 	@Test
 	public void moreThanOneAt() throws Exception {
-		String xpath = "//config/item/fun/@hah/@id";
+		String xpath = "/configSingleton/item/fun/@hah/@id";
 		String[] xpaths = { xpath };
 		String file = EXAMPLE_XML;
 		try {

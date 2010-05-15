@@ -2,13 +2,17 @@ package j2DbParser.xpath;
 
 import j2DbParser.utils.IterableDecorator;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 
+import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -22,7 +26,14 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
 
-public class XPathStaXParser {
+public class XPathStaXParser extends Observable {
+	public static final boolean T = true;
+	public static final boolean F = false;
+
+	private static final boolean DEBUG_CHOSEN = F;
+	private static final boolean DEBUG_ATTR_FINDER = F;
+	public static final boolean DEBUG_TAGS = F;
+	private static final boolean DEBUG_LOCATION = F;
 
 	private List<NodeList> inList;
 	private ArrayListMultimap<String, String> outMap;
@@ -30,16 +41,25 @@ public class XPathStaXParser {
 	private final LinkedList<String> locationList = new LinkedList<String>();
 	private List<NodeList> chosenNodeList;
 
-	private void action(InputStream in, List<NodeList> list,
+	private boolean stop;
+
+	private void prepareReadXml(InputStream in, List<NodeList> list,
 			ArrayListMultimap<String, String> map) throws XMLStreamException,
 			IOException {
 		this.inList = list;
 		this.outMap = map;
+		readXml(in);
+	}
+
+	protected void readXml(InputStream in) throws XMLStreamException,
+			FactoryConfigurationError, IOException {
 		try {
 			XMLEventReader eventReader = XMLInputFactory.newInstance()
 					.createXMLEventReader(in);
 			for (XMLEvent e : new IterableDecorator<XMLEvent>(eventReader)) {
-				parse(e);
+				if (parse(e)) {
+					break;
+				}
 			}
 		} finally {
 			if (in != null) {
@@ -61,13 +81,22 @@ public class XPathStaXParser {
 
 		InputStream stream = null;
 		try {
-			stream = ClassLoader.getSystemResourceAsStream(file);
-			if (stream == null) {
-				throw new IllegalArgumentException(
-						"file points to not existing resource,it was=" + file);
-			}
-			new XPathStaXParser().action(stream, list, map);
 
+			File file2 = new File(file);
+			String canonicalPath = file2.getCanonicalPath();
+			if (DEBUG_TAGS) {
+				System.out.println("canonicalPath=" + canonicalPath);
+			}
+			stream = new FileInputStream(file);
+			if (false) {
+				stream = ClassLoader.getSystemResourceAsStream(file);
+				if (stream == null) {
+					throw new IllegalArgumentException(
+							"file points to not existing resource,it was="
+									+ file);
+				}
+			}
+			prepareReadXml(stream, list, map);
 		} finally {
 			if (stream != null) {
 				stream.close();
@@ -76,44 +105,28 @@ public class XPathStaXParser {
 		return Multimaps.unmodifiableListMultimap(map);
 	}
 
-	private void parse(XMLEvent e) {
+	/**
+	 * 
+	 * 
+	 * @param e
+	 * @return stop processing
+	 */
+	private boolean parse(XMLEvent e) {
 		if (e.isStartElement()) {
 			chosenNodeList = new ArrayList<NodeList>();
 
 			StartElement start = e.asStartElement();
 			String tagName = start.getName().getLocalPart();
-			// System.out.println("start=" + tagName);
+
+			if (DEBUG_TAGS) {
+				System.out.println("start=" + tagName);
+			}
 			locationList.add(tagName);
-			for (NodeList nodeList : inList) {
-				if (check(nodeList)) {
-					chosenNodeList.add(nodeList);
-				}
-			}
-
-			if (!chosenNodeList.isEmpty()) {
-				IterableDecorator<Attribute> it = new IterableDecorator<Attribute>(
-						start.getAttributes());
-
-				for (Iterator<NodeList> itCh = chosenNodeList.iterator(); itCh
-						.hasNext();) {
-					NodeList nodeList = itCh.next();
-					if (checkAttribute(nodeList, it, outMap)) {
-						itCh.remove();
-					}
-				}
-			}
-
-			if (false) {
-				Iterator<Attribute> attributes = start.getAttributes();
-				for (Attribute a : new IterableDecorator<Attribute>(attributes)) {
-					String value = a.getValue();
-					System.out.println("a.value=" + value);
-				}
-			}
+			processingStartElement(start, locationList);
 		}
 
 		if (e.isEndElement()) {
-			if (false) {
+			if (DEBUG_TAGS) {
 				EndElement end = e.asEndElement();
 				String tagName = end.getName().getLocalPart();
 				System.out.println("end=" + tagName);
@@ -121,38 +134,99 @@ public class XPathStaXParser {
 			locationList.removeLast();
 		}
 
-		// System.out.println(locationList);
+		processingLocation(locationList);
+
 		Characters cha;
 		if (e.isCharacters() && !(cha = e.asCharacters()).isWhiteSpace()) {
 			String data = cha.getData();
-			List<NodeList> lnl = chosenNodeList;
-			if (!lnl.isEmpty()) {
-				// System.out.println("data=" + data);
-				for (NodeList nodeList : lnl) {
-					if (nodeList.attribute == null) {
+			processingTextElement(data);
+		}
+
+		if (DEBUG_TAGS) {
+			if (e.isEndDocument()) {
+				System.out.println("e.isEndDocument()=" + e.isEndDocument());
+			}
+		}
+		return stop;
+	}
+
+	protected void processingLocation(LinkedList<String> location) {
+		if (DEBUG_LOCATION) {
+			System.out.println(location);
+		}
+	}
+
+	protected void processingTextElement(String data) {
+		List<NodeList> lnl = chosenNodeList;
+		if (!lnl.isEmpty()) {
+			// System.out.println("data=" + data);
+			for (NodeList nodeList : lnl) {
+				if (nodeList.attribute == null) {
+					setChanged();
+					notifyObservers(new NodeTO(nodeList.xpath, data));
+					if (countObservers() == 0) {
 						outMap.put(nodeList.xpath, data);
 					}
 				}
 			}
 		}
+	}
 
-		if (false) {
-			if (e.isEndDocument()) {
-				System.out.println("e.isEndDocument()=" + e.isEndDocument());
+	protected void processingStartElement(StartElement start,
+			LinkedList<String> location) {
+		for (NodeList nodeList : inList) {
+			if (check(nodeList)) {
+				chosenNodeList.add(nodeList);
+				if (DEBUG_CHOSEN) {
+					System.out.println("chosenNodeList=" + chosenNodeList);
+				}
+			}
+		}
+
+		if (!chosenNodeList.isEmpty()) {
+			for (Iterator<NodeList> itCh = chosenNodeList.iterator(); itCh
+					.hasNext();) {
+				IterableDecorator<Attribute> it = new IterableDecorator<Attribute>(
+						start.getAttributes());
+				NodeList nodeList = itCh.next();
+				if (checkAttribute(nodeList, it)) {
+					itCh.remove();
+				}
+			}
+		}
+
+		if (DEBUG_TAGS) {
+			Iterator<Attribute> attributes = start.getAttributes();
+			for (Attribute a : new IterableDecorator<Attribute>(attributes)) {
+				String value = a.getValue();
+				System.out.println("a.value=" + value);
 			}
 		}
 	}
 
 	private boolean checkAttribute(NodeList nodeList,
-			IterableDecorator<Attribute> it,
-			ArrayListMultimap<String, String> outMap2) {
+			IterableDecorator<Attribute> it) {
 		String attr = nodeList.attribute;
-		// System.out.println("attr=" + attr);
+		if (DEBUG_ATTR_FINDER) {
+			System.out.println("attr=" + attr);
+		}
 		for (Attribute attribute : it) {
 			String realAttrName = attribute.getName().getLocalPart();
-			// System.out.println("realAttr=" + realAttrName);
+			if (DEBUG_ATTR_FINDER) {
+				System.out.println("realAttr=" + realAttrName);
+			}
 			if (realAttrName.equalsIgnoreCase(attr)) {
-				outMap.put(nodeList.xpath, attribute.getValue());
+				String value = attribute.getValue();
+				String xpath = nodeList.xpath;
+				if (DEBUG_ATTR_FINDER) {
+					System.out.println("outMap.put(" + xpath + ", " + value
+							+ ");");
+				}
+				setChanged();
+				notifyObservers(new NodeTO(nodeList.xpath, value));
+				if (countObservers() == 0) {
+					outMap.put(xpath, value);
+				}
 				return true;
 			}
 		}
@@ -161,6 +235,10 @@ public class XPathStaXParser {
 
 	private boolean check(NodeList nodeList) {
 		return (nodeList.is(locationList));
+	}
+
+	public void setStop(boolean stop) {
+		this.stop = stop;
 	}
 
 }

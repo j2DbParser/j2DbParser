@@ -13,10 +13,12 @@ public class NodeListNodeListTest {
 	@Test
 	public void relative() {
 		try {
-			new NodeList("/aaa/b");
+			new NodeList("//aaa/b");
 			fail("relative()");
 		} catch (IllegalArgumentException e) {
-			assertEquals("xpathExpre must starts with \"//\", it was /aaa/b", e
+			assertEquals(
+					"xpathExpre should not start with \"//\", it was //aaa/b",
+					e
 					.getMessage());
 		}
 	}
@@ -24,7 +26,7 @@ public class NodeListNodeListTest {
 	@Test
 	public void empty() {
 		try {
-			new NodeList("//");
+			new NodeList("/");
 			fail("empty()");
 		} catch (IllegalArgumentException e) {
 			assertEquals("nodeArrayLength must be larger than 0", e
@@ -34,7 +36,7 @@ public class NodeListNodeListTest {
 
 	@Test
 	public void single() {
-		NodeList nodeList = new NodeList("//aaa");
+		NodeList nodeList = new NodeList("/aaa");
 		Iterator<Node> it = nodeList.iterator();
 
 		assertEquals("aaa", it.next().toString());
@@ -43,7 +45,7 @@ public class NodeListNodeListTest {
 
 	@Test
 	public void two() {
-		NodeList nodeList = new NodeList("//aaa/b");
+		NodeList nodeList = new NodeList("/aaa/b");
 		Iterator<Node> it = nodeList.iterator();
 
 		assertEquals("aaa", it.next().toString());
@@ -53,7 +55,7 @@ public class NodeListNodeListTest {
 
 	@Test
 	public void three() {
-		NodeList nodeList = new NodeList("//a/b/c");
+		NodeList nodeList = new NodeList("/a/b/c");
 		Iterator<Node> it = nodeList.iterator();
 
 		assertEquals("a", it.next().toString());
