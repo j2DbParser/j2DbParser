@@ -1,3 +1,3 @@
 @ECHO OFF
-hgPush.bat
-gitPush.bat
+hgPush.bat changes
+gitPush.bat changes

@@ -1,3 +1,3 @@
-git add .
-git commit -m 'My changes'
-git push origin master
+call git add .
+call git commit -m '%1'
+call git push origin master
