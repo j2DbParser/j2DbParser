@@ -1,12 +1,16 @@
 package j2DbParser.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import javax.swing.JFileChooser;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -48,5 +52,23 @@ public class FileUtils {
 				scan.close();
 			}
 		}
+	}
+
+	public static String fileSelect() {
+		final JFileChooser fc = new JFileChooser(new File("C:/"));
+		fc.showOpenDialog(null);
+		File selectedFile = fc.getSelectedFile();
+		String canonicalPath = null;
+		if (selectedFile != null) {
+			try {
+				canonicalPath = selectedFile.getCanonicalPath();
+			} catch (IOException e) {
+				// ignore
+			}
+		}
+		if (canonicalPath == null) {
+			throw new RuntimeException(new IOException("file not selected"));
+		}
+		return canonicalPath;
 	}
 }

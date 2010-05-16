@@ -58,6 +58,7 @@ public enum EOptions {
 
 	// TODO: implement
 	TREAT_AS("ta") {
+
 		@Override
 		public Option getOption() {
 			return OptionBuilder.withArgName("treatAs").hasArg()
@@ -83,10 +84,11 @@ public enum EOptions {
 			return "log";
 		}
 	},
-	// TODO: stuff from Config
+	// TODO: stuff from ConfigSingleton
 	;
 	public static CommandLine commandLine;
 	public static Set<EOptions> chosen;
+	public static EFileType type;
 	public final String name;
 	private String paramValue;
 

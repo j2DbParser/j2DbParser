@@ -2,22 +2,29 @@ package j2DbParser.cli;
 
 import static j2DbParser.cli.EOptions.FILE;
 import static j2DbParser.cli.EOptions.RULE_NAME;
-import j2DbParser.Config;
-import j2DbParser.db.HsqlDatabase;
 import j2DbParser.db.IDatabase;
+import j2DbParser.db.IniDatabase;
 import j2DbParser.db.SqlColumn;
 import j2DbParser.db.SqlDatabase;
+import j2DbParser.hooks.HookRunner;
 import j2DbParser.io.DataReader;
 import j2DbParser.io.RulesReader;
 import j2DbParser.system.LogFactory;
 import j2DbParser.utils.IterableDecorator;
+import j2DbParser.xpath.XPathStaXParser;
+import j2DbParser.xpath.XmlObserver;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
+
+import org.apache.commons.lang.NotImplementedException;
+
+import com.google.common.collect.ImmutableBiMap;
 
 /**
  * Parser insert data from file into database.
@@ -26,16 +33,19 @@ public class Parser {
 	private static final String EXEC_NAME = "parser";
 
 	private static final Logger log = LogFactory.getLogger(Parser.class);
-	// TODO: configure the damn logger
 
-	public Config config = new Config();
-	public IDatabase database = new HsqlDatabase(config);
+	public IDatabase database =
+	// new HsqlDatabase(configSingleton);
+	new IniDatabase();
+
 	public RulesReader rules;
 	public DataReader reader;
+	private final String filename;
 
-	public Parser(String logFile, String ruleName) throws IOException {
+	public Parser(String filename, String ruleName) throws IOException {
+		this.filename = filename;
 		rules = new RulesReader(ruleName);
-		reader = new DataReader(logFile);
+		reader = new DataReader(filename);
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -65,20 +75,79 @@ public class Parser {
 
 	public SqlDatabase insertIntoDatabase() throws Exception {
 		database.start();
+		database.open();
 
 		SqlDatabase db = new SqlDatabase(rules);
 		database.createTables(db);
+		HookRunner.POST_CREATE_TABLES.run();
 
 		process(db, rules);
 		return db;
 	}
 
 	private void process(SqlDatabase db, RulesReader rules) throws Exception {
+		EFileType type = EOptions.type;
+		log.info("type1=" + type);
+		switch (type) {
+		case LOG:
+			readLog(db, rules);
+			break;
+		case XML:
+			readXml(db, rules);
+			break;
+		default:
+			throw new NotImplementedException("unsupported file type");
+		}
+		HookRunner.POST_INSERTS.run();
+	}
+
+	private void readXml(SqlDatabase db, RulesReader rules) throws Exception {
+		final Map<String, String> rulesMap = rules.getRulesMap();
+		Collection<String> xpathes = rulesMap.values();
+		String[] xpaths = xpathes.toArray(new String[xpathes.size()]);
+		System.out.println("xpathes=" + xpathes);
+		System.out.println("filename=" + filename);
+
+		final ImmutableBiMap<String, String> rulesMapBi = ImmutableBiMap
+				.copyOf(rulesMap).inverse();
+
+		// final Map<String, Set<SqlColumn>> dbMap = db.getMap();
+
+		XPathStaXParser xparser = new XPathStaXParser();
+		xparser.addObserver(new XmlObserver() {
+			@Override
+			public boolean updateLine(Map<String, String> map) throws Exception {
+				// System.out.println("updateLine(" + map + ")");
+
+				Map<String, String> columnDataMap = new LinkedHashMap<String, String>();
+
+				String table = null;
+				for (Map.Entry<String, String> entry : map.entrySet()) {
+					// System.out.println(entry);
+					String xpath = entry.getKey();
+					String value = entry.getValue();
+
+					String identString = rulesMapBi.get(xpath);
+					table = SqlDatabase.extractTableName(identString);
+					String column = SqlColumn.extractColumnName(identString);
+
+					columnDataMap.put(column, value);
+				}
+				boolean stop = database.insert(table, columnDataMap);
+				return stop;
+			}
+		});
+		xparser.parse(filename, xpaths);
+	}
+
+	private void readLog(SqlDatabase db, RulesReader rules) throws Exception {
 		try {
 			int added = 0;
 			for (String string : new IterableDecorator<String>(reader)) {
 				// System.out.println("string=" + string);
-				insertData(rules, db, string);
+				if (insertData(rules, db, string)) {
+					break;
+				}
 				added = database.getAdded();
 				if (added % 500 == 0) {
 					log.info("added=" + added);
@@ -100,7 +169,16 @@ public class Parser {
 		}
 	}
 
-	private void insertData(RulesReader rules, SqlDatabase db, String string)
+	/**
+	 * 
+	 * 
+	 * @param rules
+	 * @param db
+	 * @param string
+	 * @return stop processing
+	 * @throws Exception
+	 */
+	private boolean insertData(RulesReader rules, SqlDatabase db, String string)
 			throws Exception {
 		Map<String, String> rulesMap = rules.getRulesMap();
 		Map<String, Set<SqlColumn>> tableMap = db.getMap();
@@ -112,9 +190,11 @@ public class Parser {
 			String table = entry.getKey();
 			Map<String, String> columnDataMap = entry.getValue();
 			if (!columnDataMap.isEmpty()) {
-				database.insert(table, columnDataMap);
+				boolean stop = database.insert(table, columnDataMap);
+				return stop;
 			}
 		}
+		return false;
 	}
 
 	private Map<String, Map<String, String>> lineAsMap(
@@ -144,10 +224,6 @@ public class Parser {
 			}
 		}
 		return dataMap;
-	}
-
-	public void setConfig(Config config) {
-		this.config = config;
 	}
 
 	public void setDatabase(IDatabase database) {

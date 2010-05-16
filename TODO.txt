@@ -1,0 +1,4 @@
+use batch inserting
+http://www.roseindia.net/jdbc/Jdbc-batch-insert.shtml
+
+http://www.mysqlformatdate.com/

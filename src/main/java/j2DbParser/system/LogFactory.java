@@ -32,9 +32,8 @@ public class LogFactory {
 	}
 
 	public static Logger getLogger(Class<?> clazz) {
-		System.out.println("getLogger(" + clazz + ")");
-		Logger log = Logger.getLogger(clazz.getName());
-		return log;
+		// System.out.println("getLogger(" + clazz + ")");
+		return Logger.getLogger(clazz.getName());
 	}
 
 }

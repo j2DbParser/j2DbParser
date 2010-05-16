@@ -3,7 +3,7 @@ package j2DbParser.db;
 import j2DbParser.io.RulesReader;
 import j2DbParser.system.LogFactory;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -23,12 +23,11 @@ public class SqlDatabase {
 	}
 
 	private Map<String, Set<SqlColumn>> asTables(Map<String, String> keySet) {
-		Map<String, Set<SqlColumn>> map = new HashMap<String, Set<SqlColumn>>();
+		Map<String, Set<SqlColumn>> map = new LinkedHashMap<String, Set<SqlColumn>>();
 
 		for (Map.Entry<String, String> entry : keySet.entrySet()) {
 			String key = entry.getKey();
 			String value = entry.getValue();
-
 			String table = extractTableName(key);
 			Set<SqlColumn> mapList = map.get(table);
 			if (mapList == null) {
@@ -40,12 +39,13 @@ public class SqlDatabase {
 			column.pattern = Pattern.compile(value);
 			mapList.add(column);
 		}
+		// System.out.println("map=" + map);
 		return map;
 	}
 
-	private String extractTableName(String key) {
-		String table = StringUtils.substringBefore(key, ".");
-		return table;
+	public static String extractTableName(String key) {
+		String name = StringUtils.substringBefore(key, ".");
+		return name;
 	}
 
 	public Map<String, Set<SqlColumn>> getMap() {

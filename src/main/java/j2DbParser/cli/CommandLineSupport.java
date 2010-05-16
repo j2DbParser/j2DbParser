@@ -12,6 +12,7 @@ import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.lang.NotImplementedException;
 
 /**
  * Support for command line arguments using Commons CLI. Arguments are stored as
@@ -47,15 +48,26 @@ public class CommandLineSupport {
 			System.err.println(e.getMessage());
 			stop();
 		}
-		// options.hasOption("v")
-
 		checkGroups();
+		String value = EOptions.TREAT_AS.value();
+		if (value == null) {
+			EFileType type = EFileType.is();
+			System.out.println("type=" + type);
+			if (type == null) {
+				System.out.println("file type not supported");
+				stop();
+			}
+			EOptions.type = type;
+		} else {
+			// TODO: TREAT_AS
+			throw new NotImplementedException("TODO");
+		}
 	}
 
 	private void checkGroups() {
 		if (VERSION.has()) {
-			// TODO: finish
-			String v = "Parser 0.0.3 (2010-05-08 19:48:00)";
+			// TODO: finish version
+			String v = "Parser 0.1.0 (2010-05-15 21:16:01+0200)";
 			System.out.println(v);
 			stop();
 		}

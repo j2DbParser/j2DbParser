@@ -8,17 +8,21 @@ import j2DbParser.db.viewer.IResultSetViewer;
 import j2DbParser.db.viewer.ResultSetSimpleViewer;
 import j2DbParser.io.DataReaderSystemIn;
 import j2DbParser.io.IDataReader;
+import j2DbParser.system.LogFactory;
 import j2DbParser.utils.IterableDecorator;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 /**
  * Parser insert data from file into database. It uses In-Memory database and
  * slow to execute selects from command line.
  */
 public class ParserLive {
+
+	private static final Logger log = LogFactory.getLogger(ParserLive.class);
 	private static final String EXE_NAME = "parserLive";
 
 	public IResultSetViewer viewer = new ResultSetSimpleViewer();
@@ -50,7 +54,10 @@ public class ParserLive {
 					resultSet = database.query(s);
 					viewer.show(resultSet);
 				} catch (SQLException e) {
-					System.err.println(e.getMessage());
+					String message = e.getMessage();
+					System.err.println(message);
+					log.warning(message);
+					log.throwing("ParserLive", "database.query", e);
 				}
 			}
 		}

@@ -1,9 +1,12 @@
 package j2DbParser.db;
 
+import j2DbParser.system.LogFactory;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
@@ -11,6 +14,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 public class SqlColumn {
+
+	private static final Logger log = LogFactory.getLogger(SqlColumn.class);
 	public String name;
 	public Pattern pattern;
 	public String type;
@@ -25,7 +30,8 @@ public class SqlColumn {
 	public SqlColumn init(String key) {
 		name = extractColumnName(key);
 		if (key.indexOf("(") != -1) {
-			type = StringUtils.substringBetween(key, "(", ")");
+			type = StringUtils.substringAfter(key, "(");
+			type = StringUtils.substringBeforeLast(type, ")");
 		}
 		return this;
 	}
@@ -62,4 +68,17 @@ public class SqlColumn {
 		}
 		return (sb.toString());
 	}
+
+	public String getColumnType(int maxColumnLength) {
+		String out;
+		out = "TEXT";
+		if (type != null) {
+			out = type;
+		} else {
+			// out = out + "(" + maxColumnLength + ")";
+		}
+		log.warning(name + "=" + out);
+		return out;
+	}
+
 }

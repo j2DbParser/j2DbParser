@@ -8,13 +8,13 @@ import java.util.Map;
  * Database actions
  */
 public interface IDatabase {
-	void start() throws Exception;
+	void open() throws Exception;
 
 	void closeConnection() throws Exception;
 
 	void stop() throws Exception;
 
-	void insert(String table, Map<String, String> map) throws Exception;
+	boolean insert(String table, Map<String, String> map) throws Exception;
 
 	int getAdded();
 
@@ -25,4 +25,6 @@ public interface IDatabase {
 	void setUseInMemory(boolean useInMemory);
 
 	String getUrl();
+
+	void start();
 }
