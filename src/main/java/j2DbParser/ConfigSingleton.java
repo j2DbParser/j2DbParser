@@ -19,7 +19,7 @@ public class ConfigSingleton {
 
 	// TODO: transform into console option
 	public int maxColumnLength = MAX_COLUMN_LENGTH_DEFAULT;
-	public int maxInsertCount = MAX_INSERT_COUNT_SAMPLE;
+	public int maxInsertCount = MAX_INSERT_COUNT_NONE;
 	public boolean autoDropTables = false;
 
 	private static final Logger log = LogFactory
