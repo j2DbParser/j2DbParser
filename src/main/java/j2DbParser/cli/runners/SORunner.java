@@ -2,13 +2,11 @@ package j2DbParser.cli.runners;
 
 import static j2DbParser.cli.EOptions.FILE;
 import static j2DbParser.cli.EOptions.RULE_NAME;
+import j2DbParser.cli.CommandLineSupport;
 import j2DbParser.cli.EOptions;
 import j2DbParser.cli.Parser;
 import j2DbParser.system.ISystemEnv;
-
-import java.io.IOException;
-
-import org.apache.commons.lang.time.DurationFormatUtils;
+import j2DbParser.system.StopperDecorator;
 
 public class SORunner {
 
@@ -60,33 +58,58 @@ public class SORunner {
 			this.sectionName = sectionName;
 			this.filename = filename;
 		}
+
+		public String[] asArgs(String dir) {
+			return EOptions.example(FILE.setParamValue(dir + filename),
+					RULE_NAME.setParamValue(sectionName));
+		}
+
 	}
 
 	public static void main(String[] args) throws Exception {
-		for (ESoTableType e : ESoTableType.values()) {
-			run(e);
-		}
-		// run(ESoTableType.POSTS);
-	}
-
-	private static void run(ESoTableType now) throws Exception, IOException {
-		String dir = ISystemEnv.SO_DUMP_DIR;
+		final String dir = ISystemEnv.SO_DUMP_DIR;
 		if (dir == null) {
 			throw new IllegalStateException("dir is null");
 		}
 		System.out.println("dir=" + dir);
-		String[] args;
-		args = EOptions.example(FILE.setParamValue(dir + now.filename),
-				RULE_NAME.setParamValue(now.sectionName));
-		long startTime = System.currentTimeMillis();
-		try {
-			Parser.init(args);
-		} finally {
-			System.out.println(now
-					+ " took "
-					+ DurationFormatUtils.formatDurationHMS(System
-							.currentTimeMillis()
-							- startTime) + " ms\n");
+		if (false) {
+			for (ESoTableType e : ESoTableType.values()) {
+				run(e, dir);
+			}
+			// run(ESoTableType.POSTS);
+		} else {
+			// all at once
+			new StopperDecorator("all at once") {
+				@Override
+				protected void watch() throws Exception {
+					for (ESoTableType e : ESoTableType.values()) {
+						String[] args = asSingle(dir, e);
+						Parser.init(args);
+					}
+				}
+			};
+		}
+
+		for (ESoTableType e : ESoTableType.values()) {
+			System.out.println(CommandLineSupport.asCommandLineArgs(asSingle(
+					dir, e)));
 		}
 	}
+
+	private static void run(ESoTableType now, String dir) throws Exception {
+		final String[] args = now.asArgs(dir);
+		new StopperDecorator(now.name()) {
+			@Override
+			protected void watch() throws Exception {
+				Parser.init(args);
+			}
+		};
+	}
+
+	public static String[] asSingle(final String dir, ESoTableType e) {
+		String[] args = EOptions.example(FILE.setParamValue(dir + e.filename),
+				RULE_NAME.setParamValue("SO"));
+		return args;
+	}
+
 }

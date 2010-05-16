@@ -132,4 +132,13 @@ public class CommandLineSupport {
 		}
 	}
 
+	public static String asCommandLineArgs(String[] args) {
+		StringBuilder sb = new StringBuilder("parser");
+		for (String arg : args) {
+			sb.append(" ");
+			sb.append(arg);
+		}
+		return sb.toString();
+	}
+
 }
