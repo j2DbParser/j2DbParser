@@ -6,10 +6,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class NodeList implements Iterable<Node> {
 	private static final int SPLIT_BEGIN_IGNORE_ELEMENTS = 1;

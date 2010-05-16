@@ -49,6 +49,10 @@ public class CommandLineSupport {
 			stop();
 		}
 		checkGroups();
+		checkFileExt();
+	}
+
+	public void checkFileExt() {
 		String value = EOptions.TREAT_AS.value();
 		if (value == null) {
 			EFileType type = EFileType.is();
@@ -66,9 +70,9 @@ public class CommandLineSupport {
 
 	private void checkGroups() {
 		if (VERSION.has()) {
-			// TODO: finish version
-			String v = "Parser 0.1.0 (2010-05-15 21:16:01+0200)";
-			System.out.println(v);
+			String ver = exeName + " " + Version.getVersionString() + " ("
+					+ Version.getTimeString() + ")";
+			System.out.println(ver);
 			stop();
 		}
 	}

@@ -1,15 +1,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>j2DbParse</groupId>
-	<artifactId>j2DbParse</artifactId>
+	<groupId>j2DbParser</groupId>
+	<artifactId>j2DbParser</artifactId>
 	<version>0.1.0</version>
 	<url>http://code.google.com/p/j2dbparser/</url>
+
+	<name>j2DbParser</name>
 	<description>Java 2 Database Parser</description>
+
 	<inceptionYear>2010</inceptionYear>
 	<properties>
-
+		<!-- for bytecode modification time -->
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 	</properties>
+
+	<organization>
+		<name>j2DbParser</name>
+		<url>http://code.google.com/p/j2dbparser/</url>
+	</organization>
+
 	<developers>
 		<developer>
 			<id>Raveman</id>
@@ -85,8 +95,8 @@
 					<descriptors>
 						<descriptor>src/main/assembly/distro.xml</descriptor>
 					</descriptors>
-					<finalName>${artifactId}-${version}</finalName>
-                  
+					<finalName>${project.artifactId}-${project.version}</finalName>
+
 				</configuration>
 			</plugin>
 			<plugin>
@@ -107,6 +117,40 @@
 						<param>src/main/assembly/configParser.xml</param>
 						<param>src/main/assembly/configParserLive.xml</param>
 					</configs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jboss.maven.plugins</groupId>
+				<artifactId>maven-injection-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>bytecode</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<bytecodeInjections>
+						<bytecodeInjection>
+							<expression>${project.version}</expression>
+							<targetMembers>
+								<methodBodyReturn>
+									<className>j2DbParser.cli.Version</className>
+									<methodName>getVersionString</methodName>
+								</methodBodyReturn>
+							</targetMembers>
+						</bytecodeInjection>
+						<bytecodeInjection>
+							<expression>${maven.build.timestamp}</expression>
+							<targetMembers>
+								<methodBodyReturn>
+									<className>j2DbParser.cli.Version</className>
+									<methodName>getTimeString</methodName>
+								</methodBodyReturn>
+							</targetMembers>
+						</bytecodeInjection>
+					</bytecodeInjections>
 				</configuration>
 			</plugin>
 		</plugins>

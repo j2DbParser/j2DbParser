@@ -5,12 +5,11 @@ import j2DbParser.system.LogFactory;
 import j2DbParser.utils.IterableDecorator;
 
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.NotImplementedException;
-
-import sun.misc.Service;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
@@ -75,8 +74,8 @@ public enum HookRunner {
 	}
 
 	private static ImmutableList<IHook> findClasses() {
-		IterableDecorator<IHook> it = new IterableDecorator<IHook>(Service
-				.providers(IHook.class));
+		IterableDecorator<IHook> it = new IterableDecorator<IHook>(
+				ServiceLoader.load(IHook.class).iterator());
 		Builder<IHook> builder = ImmutableList.builder();
 		for (IHook hok : it) {
 			builder.add(hok);
