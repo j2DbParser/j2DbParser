@@ -74,8 +74,8 @@ public enum HookRunner {
 	}
 
 	private static ImmutableList<IHook> findClasses() {
-		IterableDecorator<IHook> it = new IterableDecorator<IHook>(
-				ServiceLoader.load(IHook.class).iterator());
+		Iterable<IHook> it = IterableDecorator.create(ServiceLoader.load(
+				IHook.class).iterator());
 		Builder<IHook> builder = ImmutableList.builder();
 		for (IHook hok : it) {
 			builder.add(hok);

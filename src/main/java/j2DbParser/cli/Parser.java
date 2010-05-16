@@ -143,7 +143,7 @@ public class Parser {
 	private void readLog(SqlDatabase db, RulesReader rules) throws Exception {
 		try {
 			int added = 0;
-			for (String string : new IterableDecorator<String>(reader)) {
+			for (String string : IterableDecorator.create(reader)) {
 				// System.out.println("string=" + string);
 				if (insertData(rules, db, string)) {
 					break;

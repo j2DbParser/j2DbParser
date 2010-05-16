@@ -186,8 +186,8 @@ public class XPathStaXParser extends Observable {
 		if (!chosenNodeList.isEmpty()) {
 			for (Iterator<NodeList> itCh = chosenNodeList.iterator(); itCh
 					.hasNext();) {
-				IterableDecorator<Attribute> it = new IterableDecorator<Attribute>(
-						start.getAttributes());
+				Iterable<Attribute> it = IterableDecorator.create(start
+						.getAttributes());
 				NodeList nodeList = itCh.next();
 				if (checkAttribute(nodeList, it)) {
 					itCh.remove();
@@ -197,15 +197,14 @@ public class XPathStaXParser extends Observable {
 
 		if (DEBUG_TAGS) {
 			Iterator<Attribute> attributes = start.getAttributes();
-			for (Attribute a : new IterableDecorator<Attribute>(attributes)) {
+			for (Attribute a : IterableDecorator.create(attributes)) {
 				String value = a.getValue();
 				System.out.println("a.value=" + value);
 			}
 		}
 	}
 
-	private boolean checkAttribute(NodeList nodeList,
-			IterableDecorator<Attribute> it) {
+	private boolean checkAttribute(NodeList nodeList, Iterable<Attribute> it) {
 		String attr = nodeList.attribute;
 		if (DEBUG_ATTR_FINDER) {
 			System.out.println("attr=" + attr);

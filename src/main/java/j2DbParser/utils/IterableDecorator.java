@@ -19,4 +19,8 @@ public class IterableDecorator<E> implements Iterable<E> {
 		return iter;
 	}
 
+	public static <E> Iterable<E> create(Iterator<E> it) {
+		return new IterableDecorator<E>(it);
+	}
+
 }

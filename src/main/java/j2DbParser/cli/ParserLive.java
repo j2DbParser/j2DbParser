@@ -46,7 +46,7 @@ public class ParserLive {
 
 		System.out.println("\nwrite selects here");
 
-		for (String s : new IterableDecorator<String>(reader)) {
+		for (String s : IterableDecorator.create(reader)) {
 			System.out.println(s);
 			if (s.toLowerCase().startsWith("select")) {
 				ResultSet resultSet;
