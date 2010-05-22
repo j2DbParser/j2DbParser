@@ -5,10 +5,9 @@ import static j2DbParser.cli.EOptions.RULE_NAME;
 import j2DbParser.cli.EOptions;
 import j2DbParser.cli.Parser;
 
-public class ParserRunner {
+public class IniParserRunner {
 	public static void main(String[] args) throws Exception {
 		args = EOptions.example(FILE, RULE_NAME);
 		Parser.main(args);
 	}
-
 }

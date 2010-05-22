@@ -115,7 +115,6 @@
 					<launch4jHome>C:\Program Files\Launch4j\launch4j.exe</launch4jHome>
 					<configs>
 						<param>src/main/assembly/configParser.xml</param>
-						<param>src/main/assembly/configParserLive.xml</param>
 					</configs>
 				</configuration>
 			</plugin>
