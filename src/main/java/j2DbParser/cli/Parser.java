@@ -3,7 +3,6 @@ package j2DbParser.cli;
 import static j2DbParser.cli.EOptions.FILE;
 import static j2DbParser.cli.EOptions.RULE_NAME;
 import j2DbParser.db.IDatabase;
-import j2DbParser.db.IniDatabase;
 import j2DbParser.db.SqlColumn;
 import j2DbParser.db.SqlDatabase;
 import j2DbParser.hooks.HookRunner;
@@ -14,7 +13,6 @@ import j2DbParser.utils.IterableDecorator;
 import j2DbParser.xpath.XPathStaXParser;
 import j2DbParser.xpath.XmlObserver;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -25,6 +23,8 @@ import java.util.regex.Matcher;
 import org.apache.commons.lang.NotImplementedException;
 
 import com.google.common.collect.ImmutableBiMap;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
 
 /**
  * Parser insert data from file into database.
@@ -34,33 +34,33 @@ public class Parser {
 
 	private static final Logger log = LogFactory.getLogger(Parser.class);
 
-	public IDatabase database =
+	@Inject
+	public IDatabase database;
 	// new HsqlDatabase(configSingleton);
-	new IniDatabase();
+	// new IniDatabase();
 
 	public RulesReader rules;
 	public DataReader reader;
-	private final String filename;
-
-	public Parser(String filename, String ruleName) throws IOException {
-		this.filename = filename;
-		rules = new RulesReader(ruleName);
-		reader = new DataReader(filename);
-	}
+	private String filename;
 
 	public static void main(String[] args) throws Exception {
-		init(args);
-	}
-
-	public static void init(String[] args) throws Exception, IOException {
 		new CommandLineSupport(EXEC_NAME, args).parse();
 
 		String rulesFile = RULE_NAME.value();
 		String logFile = FILE.value();
-		new Parser(logFile, rulesFile).start();
+
+		Parser parser = Guice.createInjector().getInstance(Parser.class);
+		parser.start(logFile, rulesFile);
 	}
 
-	public void start() throws Exception {
+	public void start(String filename, String ruleName) throws Exception {
+		this.filename = filename;
+		rules = new RulesReader(ruleName);
+		reader = new DataReader(filename);
+
+		IDatabase user = Guice.createInjector().getInstance(IDatabase.class);
+		System.out.println("user=" + user);
+
 		SqlDatabase db = insertIntoDatabase();
 
 		database.closeConnection();

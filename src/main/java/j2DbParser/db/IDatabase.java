@@ -4,9 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+import com.google.inject.ImplementedBy;
+
 /**
  * Database actions
  */
+@ImplementedBy(IniDatabase.class)
 public interface IDatabase {
 	void open() throws Exception;
 

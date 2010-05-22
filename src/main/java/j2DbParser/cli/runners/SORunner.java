@@ -84,7 +84,7 @@ public class SORunner {
 				protected void watch() throws Exception {
 					for (ESoTableType e : ESoTableType.values()) {
 						String[] args = asSingle(dir, e);
-						Parser.init(args);
+						Parser.main(args);
 					}
 				}
 			};
@@ -101,7 +101,7 @@ public class SORunner {
 		new StopperDecorator(now.name()) {
 			@Override
 			protected void watch() throws Exception {
-				Parser.init(args);
+				Parser.main(args);
 			}
 		};
 	}
