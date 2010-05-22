@@ -67,11 +67,12 @@ public class SOObserverTest {
 	}
 
 	private List<NodeTO> parse(String[] xpaths, String file)
-			throws IOException,
-			XMLStreamException {
+			throws IOException, XMLStreamException {
+		file = ClassLoader.getSystemResource(file).getFile();
 		XPathStaXParser parser = new XPathStaXParser();
 		final List<NodeTO> list = new ArrayList<NodeTO>();
 		parser.addObserver(new Observer() {
+			@Override
 			public void update(Observable o, Object arg) {
 				NodeTO to = (NodeTO) arg;
 				// System.out.println("update(" + arg + ")");

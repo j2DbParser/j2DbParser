@@ -28,8 +28,7 @@ public class SOAttributeTest {
 				System.out.println(entry);
 			}
 		}
-		assertEquals("[1, 2]", map.get(
-				xpath).toString());
+		assertEquals("[1, 2]", map.get(xpath).toString());
 		map.removeAll(xpath);
 
 		assertEquals("[-1, -3]", map.get(xpath2).toString());
@@ -37,9 +36,9 @@ public class SOAttributeTest {
 		assertEquals(0, map.size());
 	}
 
-
 	private ArrayListMultimap<String, String> parse(String[] xpaths, String file)
 			throws IOException, XMLStreamException {
+		file = ClassLoader.getSystemResource(file).getFile();
 		return ArrayListMultimap.create(new XPathStaXParser().parse(file,
 				xpaths));
 	}

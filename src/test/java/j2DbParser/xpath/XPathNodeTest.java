@@ -98,6 +98,7 @@ public class XPathNodeTest {
 
 	private ArrayListMultimap<String, String> parse(String[] xpaths, String file)
 			throws IOException, XMLStreamException {
+		file = ClassLoader.getSystemResource(file).getFile();
 		return ArrayListMultimap.create(new XPathStaXParser().parse(file,
 				xpaths));
 	}
