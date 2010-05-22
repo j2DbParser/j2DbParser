@@ -35,8 +35,9 @@ public class XPathGen extends XPathStaXParser {
 					+ location + ")");
 		}
 
-		for (Attribute a : IterableDecorator.<Attribute> create(start
-				.getAttributes())) {
+		Iterable<Attribute> iterable = IterableDecorator
+				.<Attribute> create(start.getAttributes());
+		for (Attribute a : iterable) {
 			String xpath = getXpath(a.getName().getLocalPart());
 			if (found.add(xpath)) {
 				System.out.println(xpath);
