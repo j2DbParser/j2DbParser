@@ -27,7 +27,7 @@ public enum EOptions {
 
 		@Override
 		public String exampleValue() {
-			return "example.log";
+			return "src/test/resources/example.log";
 		}
 	},
 	RULE_NAME("r") {

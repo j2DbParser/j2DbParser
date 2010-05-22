@@ -29,7 +29,7 @@ public class EOptionsExampleTest {
 	public void exampleParser() throws Exception {
 		EOptions[] options = { FILE, RULE_NAME };
 		List<String> asList = Arrays.asList(EOptions.example(options));
-		assertEquals("[-f, example.log, -r, log]", asList.toString());
+		assertEquals("[-f, src/test/resources/example.log, -r, log]", asList
+				.toString());
 	}
 }
-

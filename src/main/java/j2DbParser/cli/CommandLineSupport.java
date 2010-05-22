@@ -5,8 +5,6 @@ import static j2DbParser.cli.EOptions.RULE_NAME;
 import static j2DbParser.cli.EOptions.VERSION;
 import j2DbParser.system.StopperSingleton;
 
-import java.util.Arrays;
-
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
@@ -36,7 +34,7 @@ public class CommandLineSupport {
 	 * @return true if you should not continue
 	 */
 	public void parse() {
-		System.out.println("main(" + Arrays.toString(args) + ")");
+		System.out.println(asCommandLineArgs(args));
 		Options options = getOptions();
 		if (args.length == 0) {
 			new HelpFormatter().printHelp(exeName, options, true);

@@ -8,7 +8,7 @@ import j2DbParser.cli.Parser;
 import j2DbParser.system.ISystemEnv;
 import j2DbParser.system.StopperDecorator;
 
-public class SORunner {
+public class StackoverflowRunner {
 
 	public static enum ESoTableType {
 		// 505MB

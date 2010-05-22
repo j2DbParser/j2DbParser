@@ -19,15 +19,21 @@ public class DataReader implements IDataReader {
 
 	public DataReader(String logFile) {
 		this.logFile = logFile;
-		if (logFile != null && !new File(logFile).canRead()) {
-			StopperSingleton.getInstance().stop(
-					"Could not read the file " + logFile);
+		File file = new File(logFile);
+		if (logFile != null && !file.canRead()) {
+			try {
+				StopperSingleton.getInstance().stop(
+						"Could not read the file " + file.getCanonicalPath());
+			} catch (IOException e) {
+				throw new IllegalStateException(e);
+			}
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean hasNext() {
 		if (scanner == null) {
 			try {
@@ -43,6 +49,7 @@ public class DataReader implements IDataReader {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Scanner initScanner() throws FileNotFoundException {
 		return new Scanner(new FileInputStream(logFile).getChannel());
 	}
@@ -50,6 +57,7 @@ public class DataReader implements IDataReader {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String next() {
 		return scanner.nextLine();
 	}
@@ -57,6 +65,7 @@ public class DataReader implements IDataReader {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void remove() {
 		throw new NotImplementedException();
 	}
@@ -64,6 +73,7 @@ public class DataReader implements IDataReader {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void close() throws IOException {
 		if (scanner != null) {
 			scanner.close();
