@@ -2,6 +2,7 @@ package j2DbParser.cli.runners;
 
 import static j2DbParser.cli.EOptions.FILE;
 import static j2DbParser.cli.EOptions.RULE_NAME;
+import j2DbParser.ConfigSingleton;
 import j2DbParser.cli.CommandLineSupport;
 import j2DbParser.cli.EOptions;
 import j2DbParser.cli.Parser;
@@ -67,6 +68,8 @@ public class StackoverflowRunner {
 	}
 
 	public static void main(String[] args) throws Exception {
+		ConfigSingleton.getInstance().maxInsertCount = 5;
+
 		final String dir = ISystemEnv.SO_DUMP_DIR;
 		if (dir == null) {
 			throw new IllegalStateException("dir is null");
