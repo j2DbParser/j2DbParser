@@ -1,23 +1,13 @@
-package j2DbParser.db;
+package j2DbParser.dbunit;
 
 import org.dbunit.DBTestCase;
-import org.dbunit.PropertiesBasedJdbcDatabaseTester;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 
 public class DbUnitTest extends DBTestCase {
 
 	static {
-		System.setProperty(
-				PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS,
-				"com.mysql.jdbc.Driver");
-		System.setProperty(
-				PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL,
-				"jdbc:mysql://localhost/so-temp");
-		System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME,
-				"root");
-		System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD,
-				"qazxsw");
+		new DbIniter();
 	}
 
 	@Override
