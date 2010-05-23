@@ -14,10 +14,10 @@
 		<!-- for bytecode modification time -->
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 		
-		<driver>com.mysql.jdbc.Driver</driver>
-		<url>jdbc:mysql://localhost/so-temp</url>
-		<username>root</username>
-		<pwd>qazxsw</pwd>
+		<driver>org.hsqldb.jdbcDriver</driver>
+		<url>jdbc:hsqldb:mem:aname</url>
+		<username>SA</username>
+		<pwd></pwd>
 	</properties>
 
 	<organization>
@@ -64,9 +64,9 @@
 				<artifactId>dbunit-maven-plugin</artifactId>
 				<dependencies>
 					<dependency>
-						<groupId>mysql</groupId>
-						<artifactId>mysql-connector-java</artifactId>
-						<version>5.1.6</version>
+						<groupId>hsqldb</groupId>
+						<artifactId>hsqldb</artifactId>
+						<version>1.8.0.10</version>
 					</dependency>
 				</dependencies>
 				<configuration>
