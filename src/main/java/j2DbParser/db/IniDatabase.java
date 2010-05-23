@@ -1,7 +1,6 @@
 package j2DbParser.db;
 
 import j2DbParser.ConfigSingleton;
-import j2DbParser.cli.Parser;
 import j2DbParser.hooks.HookRunner;
 import j2DbParser.system.LogFactory;
 import j2DbParser.system.StopperSingleton;
@@ -23,13 +22,14 @@ import org.ini4j.Wini;
 
 public class IniDatabase implements IDatabase {
 
-	protected static final Logger log = LogFactory.getLogger(Parser.class);
+	protected static final Logger log = LogFactory.getLogger(IniDatabase.class);
 
 	protected Connection con;
 	protected String url;
 
 	int added;
 
+	@Override
 	public void open() throws Exception {
 		Wini ini = ConfigSingleton.getInstance().read();
 		String db = ini.get("config", "default_db");
@@ -47,10 +47,12 @@ public class IniDatabase implements IDatabase {
 		}
 	}
 
+	@Override
 	public void setUseInMemory(boolean useInMemory) {
 		// hook
 	}
 
+	@Override
 	public void start() {
 		// hook
 	}
@@ -58,6 +60,7 @@ public class IniDatabase implements IDatabase {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createTables(SqlDatabase db) throws Exception {
 		Map<String, Set<SqlColumn>> tables = db.getMap();
 		int maxColumnLength = ConfigSingleton.getInstance().maxColumnLength;
@@ -119,6 +122,7 @@ public class IniDatabase implements IDatabase {
 		}
 	}
 
+	@Override
 	public ResultSet query(String query) throws SQLException {
 		Statement st = null;
 		try {
@@ -157,6 +161,7 @@ public class IniDatabase implements IDatabase {
 	 * 
 	 * @return stop processing
 	 */
+	@Override
 	public boolean insert(String table, Map<String, String> map)
 			throws Exception {
 		int maxColumnLength = ConfigSingleton.getInstance().maxColumnLength;
@@ -217,6 +222,7 @@ public class IniDatabase implements IDatabase {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void closeConnection() throws Exception {
 		if (con != null) {
 			con.close();
@@ -228,14 +234,17 @@ public class IniDatabase implements IDatabase {
 	 * 
 	 * @throws Exception
 	 */
+	@Override
 	public void stop() throws Exception {
 		closeConnection();
 	}
 
+	@Override
 	public int getAdded() {
 		return added;
 	}
 
+	@Override
 	public String getUrl() {
 		return url;
 	}

@@ -7,7 +7,7 @@ import org.dbunit.dataset.IDataSet;
 public class DbUnitTest extends DBTestCase {
 
 	static {
-		new DbIniter();
+		DbIniter.init();
 	}
 
 	@Override
@@ -15,8 +15,8 @@ public class DbUnitTest extends DBTestCase {
 		return getConnection().createDataSet();
 	}
 
-	public void testname() throws Exception {
-		System.out.println("testname()");
+	public void testDb() throws Exception {
+		System.out.println("testDb()");
 		IDatabaseConnection connection = getConnection();
 		System.out.println("connection=" + connection);
 

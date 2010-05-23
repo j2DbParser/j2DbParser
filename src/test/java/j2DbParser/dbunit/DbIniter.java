@@ -5,33 +5,31 @@ import java.util.Properties;
 
 import org.dbunit.PropertiesBasedJdbcDatabaseTester;
 
-public class DbIniter {
+public enum DbIniter {
+	driver(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS), url(
+			PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL), username(
+			PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME), pwd(
+			PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD);
+
+	private final String value;
+
+	private DbIniter(String value) {
+		this.value = value;
+	}
+
 	private static final String PROP = "dbunit.properties";
 
-	static {
+	public static void init() {
 		try {
 			Properties prop = new Properties();
 			prop.load(ClassLoader.getSystemResourceAsStream(PROP));
-			System.out.println("prop=" + prop);
-			System.setProperty(
-					PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, prop
-							.getProperty("driver"));
-			System.setProperty(
-					PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL,
-					prop.getProperty("url"));
-			System.setProperty(
-					PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, prop
-							.getProperty("username"));
-			System.setProperty(
-					PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, prop
-							.getProperty("pwd"));
+			DbIniter[] values = values();
+			for (DbIniter dbIniter : values) {
+				String property = prop.getProperty(dbIniter.name());
+				System.setProperty(dbIniter.value, property);
+			}
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
-
-	}
-
-	public static void main(String[] args) throws Exception {
-		new DbIniter();
 	}
 }
