@@ -1,7 +1,7 @@
 package j2DbParser.hooks;
 
 import j2DbParser.db.SqlColumn;
-import j2DbParser.guice.Guicer;
+import j2DbParser.guice.GuiceInjector;
 import j2DbParser.system.logging.LogFactory;
 import j2DbParser.utils.IterableDecorator;
 
@@ -79,7 +79,7 @@ public enum HookRunner {
 				IHook.class).iterator());
 		Builder<IHook> builder = ImmutableList.builder();
 		for (IHook hok : it) {
-			hok = Guicer.getInstance(hok.getClass());
+			hok = GuiceInjector.getInstance(hok.getClass());
 			builder.add(hok);
 		}
 		return builder.build();

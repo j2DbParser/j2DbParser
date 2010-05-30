@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
-public class GuicerMock extends Guicer {
+public class GuicerMock extends GuiceInjector {
 	
 	public static class ConfigSingletonMock extends ConfigSingleton {
 

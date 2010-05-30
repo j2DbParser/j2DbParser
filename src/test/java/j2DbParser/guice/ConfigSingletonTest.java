@@ -13,14 +13,14 @@ public class ConfigSingletonTest {
 	
 	@Test
 	public void testSingleton() throws Exception {
-		ConfigSingleton instance1 = Guicer.getInstance(ConfigSingleton.class);
-		ConfigSingleton instance2 = Guicer.getInstance(ConfigSingleton.class);
+		ConfigSingleton instance1 = GuiceInjector.getInstance(ConfigSingleton.class);
+		ConfigSingleton instance2 = GuiceInjector.getInstance(ConfigSingleton.class);
 		assertTrue(instance1==instance2);
 		
-		Guicer.setInjector(Guice.createInjector(new GuicerMock()));
+		GuiceInjector.setInjector(Guice.createInjector(new GuicerMock()));
 		
-		ConfigSingleton instance3 = Guicer.getInstance(ConfigSingleton.class);
-		ConfigSingleton instance4 = Guicer.getInstance(ConfigSingleton.class);
+		ConfigSingleton instance3 = GuiceInjector.getInstance(ConfigSingleton.class);
+		ConfigSingleton instance4 = GuiceInjector.getInstance(ConfigSingleton.class);
 		assertTrue(instance3==instance4);
 		
 		assertTrue(instance1!=instance3);

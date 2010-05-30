@@ -5,11 +5,11 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.matcher.Matchers;
 
-public class Guicer extends AbstractModule {
-	private static Injector injector = Guice.createInjector(new Guicer());
+public class GuiceInjector extends AbstractModule {
+	private static Injector injector = Guice.createInjector(new GuiceInjector());
 
 	public static void setInjector(Injector injector) {
-		Guicer.injector = injector;
+		GuiceInjector.injector = injector;
 	}
 
 	public static <T> T getInstance(Class<T> c) {

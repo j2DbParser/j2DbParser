@@ -6,7 +6,7 @@ import j2DbParser.ConfigSingleton;
 import j2DbParser.cli.CommandLineSupport;
 import j2DbParser.cli.EOptions;
 import j2DbParser.cli.Parser;
-import j2DbParser.guice.Guicer;
+import j2DbParser.guice.GuiceInjector;
 import j2DbParser.system.ISystemEnv;
 import j2DbParser.system.StopperDecorator;
 
@@ -69,7 +69,7 @@ public class StackoverflowRunner {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Guicer.getInstance(ConfigSingleton.class).maxInsertCount = 5;
+		GuiceInjector.getInstance(ConfigSingleton.class).maxInsertCount = 5;
 
 		final String dir = ISystemEnv.SO_DUMP_DIR;
 		if (dir == null) {

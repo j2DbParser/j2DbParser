@@ -5,7 +5,7 @@ import static j2DbParser.cli.EOptions.RULE_NAME;
 import j2DbParser.db.IDatabase;
 import j2DbParser.db.SqlColumn;
 import j2DbParser.db.SqlDatabase;
-import j2DbParser.guice.Guicer;
+import j2DbParser.guice.GuiceInjector;
 import j2DbParser.hooks.HookRunner;
 import j2DbParser.io.DataReader;
 import j2DbParser.io.RulesReader;
@@ -47,7 +47,7 @@ public class Parser {
 		String rulesFile = RULE_NAME.value();
 		String logFile = FILE.value();
 
-		Parser parser = Guicer.getInstance(Parser.class);
+		Parser parser = GuiceInjector.getInstance(Parser.class);
 		parser.start(logFile, rulesFile);
 	}
 

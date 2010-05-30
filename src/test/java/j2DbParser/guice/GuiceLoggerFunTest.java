@@ -33,7 +33,7 @@ public class GuiceLoggerFunTest {
 
 	@Test
 	public void testLogging() throws Exception {
-		LoggerFun logger = Guicer.getInstance(LoggerFun.class);
+		LoggerFun logger = GuiceInjector.getInstance(LoggerFun.class);
 		logger.logAll();
 	}
 }
