@@ -27,13 +27,10 @@ public class XPathGen extends XPathStaXParser {
 	private LinkedList<String> location;
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void processingStartElement(StartElement start,
 			LinkedList<String> location) {
 		this.location = location;
-		if (false) {
-			System.out.println("processingStartElement(" + start + ", "
-					+ location + ")");
-		}
 
 		Iterable<Attribute> iterable = IterableDecorator
 				.<Attribute> create(start.getAttributes());

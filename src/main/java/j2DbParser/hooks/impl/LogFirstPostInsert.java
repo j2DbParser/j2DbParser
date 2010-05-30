@@ -1,7 +1,7 @@
 package j2DbParser.hooks.impl;
 
 import j2DbParser.hooks.IPostInsert;
-import j2DbParser.system.LogFactory;
+import j2DbParser.system.logging.LogFactory;
 
 import java.util.Map;
 import java.util.logging.Logger;

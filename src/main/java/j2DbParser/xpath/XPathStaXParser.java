@@ -26,6 +26,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
 
+@SuppressWarnings("unchecked")
 public class XPathStaXParser extends Observable {
 	public static final boolean T = true;
 	public static final boolean F = false;
@@ -88,14 +89,6 @@ public class XPathStaXParser extends Observable {
 				System.out.println("canonicalPath=" + canonicalPath);
 			}
 			stream = new FileInputStream(file);
-			if (false) {
-				stream = ClassLoader.getSystemResourceAsStream(file);
-				if (stream == null) {
-					throw new IllegalArgumentException(
-							"file points to not existing resource,it was="
-									+ file);
-				}
-			}
 			prepareReadXml(stream, list, map);
 		} finally {
 			if (stream != null) {

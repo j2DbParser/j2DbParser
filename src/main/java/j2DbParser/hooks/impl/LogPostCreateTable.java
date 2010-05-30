@@ -2,7 +2,7 @@ package j2DbParser.hooks.impl;
 
 import j2DbParser.db.SqlColumn;
 import j2DbParser.hooks.IPostCreateTable;
-import j2DbParser.system.LogFactory;
+import j2DbParser.system.logging.LogFactory;
 
 import java.util.Set;
 import java.util.logging.Logger;

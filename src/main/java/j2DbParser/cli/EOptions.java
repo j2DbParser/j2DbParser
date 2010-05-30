@@ -107,6 +107,7 @@ public enum EOptions {
 
 	private Set<EOptions> getChosenOptions() {
 		Set<EOptions> set = new HashSet<EOptions>();
+		@SuppressWarnings("unchecked")
 		Iterator<Option> iterator = commandLine.iterator();
 		while (iterator.hasNext()) {
 			Option next = iterator.next();

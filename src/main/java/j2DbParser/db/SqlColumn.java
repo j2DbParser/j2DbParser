@@ -1,6 +1,6 @@
 package j2DbParser.db;
 
-import j2DbParser.system.LogFactory;
+import j2DbParser.system.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,9 +54,9 @@ public class SqlColumn {
 	public static String asCommaSeperated(Collection<SqlColumn> col) {
 		List<SqlColumn> al = null;
 		if (col instanceof ArrayList) {
-			al = (ArrayList) col;
+			al = (ArrayList<SqlColumn>) col;
 		} else {
-			al = new ArrayList(col);
+			al = new ArrayList<SqlColumn>(col);
 		}
 		StringBuilder sb = new StringBuilder();
 		for (Iterator<SqlColumn> iterator = al.iterator(); iterator.hasNext();) {

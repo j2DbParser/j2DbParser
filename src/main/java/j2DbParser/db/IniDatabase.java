@@ -2,8 +2,8 @@ package j2DbParser.db;
 
 import j2DbParser.ConfigSingleton;
 import j2DbParser.hooks.HookRunner;
-import j2DbParser.system.LogFactory;
 import j2DbParser.system.StopperSingleton;
+import j2DbParser.system.logging.LogFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 import org.apache.commons.lang.StringUtils;
 import org.ini4j.Wini;
 
+import com.google.inject.Inject;
+
 public class IniDatabase implements IDatabase {
 
 	protected static final Logger log = LogFactory.getLogger(IniDatabase.class);
@@ -29,12 +31,15 @@ public class IniDatabase implements IDatabase {
 
 	int added;
 
+	@Inject
+	public ConfigSingleton config;
+
 	@Override
 	public void open() throws Exception {
-		Wini ini = ConfigSingleton.getInstance().read();
+		Wini ini = config.read();
 		String db = ini.get("config", "default_db");
 		log.finest("db=" + db);
-		String url = ini.get(db, "url");
+		url = ini.get(db, "url");
 		String user = ini.get(db, "user");
 		String password = ini.get(db, "password");
 		String driver = ini.get(db, "driver");
@@ -63,7 +68,7 @@ public class IniDatabase implements IDatabase {
 	@Override
 	public void createTables(SqlDatabase db) throws Exception {
 		Map<String, Set<SqlColumn>> tables = db.getMap();
-		int maxColumnLength = ConfigSingleton.getInstance().maxColumnLength;
+		int maxColumnLength = config.maxColumnLength;
 		for (Map.Entry<String, Set<SqlColumn>> entry : tables.entrySet()) {
 			String table = entry.getKey();
 			Set<SqlColumn> columns = entry.getValue();
@@ -96,7 +101,7 @@ public class IniDatabase implements IDatabase {
 					StopperSingleton.getInstance().stop();
 					break;
 				case 1050:
-					if (ConfigSingleton.getInstance().autoDropTables) {
+					if (config.autoDropTables) {
 						try {
 							System.err.println("dropping table " + table
 									+ "...");
@@ -164,7 +169,7 @@ public class IniDatabase implements IDatabase {
 	@Override
 	public boolean insert(String table, Map<String, String> map)
 			throws Exception {
-		int maxColumnLength = ConfigSingleton.getInstance().maxColumnLength;
+		int maxColumnLength = config.maxColumnLength;
 		String query = genInsert(table, map);
 
 		PreparedStatement st = statementCache.get(query);

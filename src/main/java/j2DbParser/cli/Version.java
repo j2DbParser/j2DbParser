@@ -13,5 +13,4 @@ public class Version {
 		System.out.println(getVersionString());
 		System.out.println(getTimeString());
 	}
-
 }

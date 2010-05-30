@@ -5,10 +5,11 @@ import static j2DbParser.cli.EOptions.RULE_NAME;
 import j2DbParser.db.IDatabase;
 import j2DbParser.db.SqlColumn;
 import j2DbParser.db.SqlDatabase;
+import j2DbParser.guice.Guicer;
 import j2DbParser.hooks.HookRunner;
 import j2DbParser.io.DataReader;
 import j2DbParser.io.RulesReader;
-import j2DbParser.system.LogFactory;
+import j2DbParser.system.logging.LogFactory;
 import j2DbParser.utils.IterableDecorator;
 import j2DbParser.xpath.XPathStaXParser;
 import j2DbParser.xpath.XmlObserver;
@@ -23,7 +24,6 @@ import java.util.regex.Matcher;
 import org.apache.commons.lang.NotImplementedException;
 
 import com.google.common.collect.ImmutableBiMap;
-import com.google.inject.Guice;
 import com.google.inject.Inject;
 
 /**
@@ -36,8 +36,6 @@ public class Parser {
 
 	@Inject
 	public IDatabase database;
-	// new HsqlDatabase(configSingleton);
-	// new IniDatabase();
 
 	public RulesReader rules;
 	public DataReader reader;
@@ -49,17 +47,15 @@ public class Parser {
 		String rulesFile = RULE_NAME.value();
 		String logFile = FILE.value();
 
-		Parser parser = Guice.createInjector().getInstance(Parser.class);
+		Parser parser = Guicer.getInstance(Parser.class);
 		parser.start(logFile, rulesFile);
 	}
 
 	public void start(String filename, String ruleName) throws Exception {
+		log.info("start(" + filename + ", " + ruleName + ")");
 		this.filename = filename;
 		rules = new RulesReader(ruleName);
 		reader = new DataReader(filename);
-
-		IDatabase user = Guice.createInjector().getInstance(IDatabase.class);
-		System.out.println("user=" + user);
 
 		SqlDatabase db = insertIntoDatabase();
 

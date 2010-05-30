@@ -1,7 +1,7 @@
 package j2DbParser.db;
 
 import j2DbParser.io.RulesReader;
-import j2DbParser.system.LogFactory;
+import j2DbParser.system.logging.LogFactory;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;

@@ -27,7 +27,7 @@ public class RulesReader {
 		this.ruleName = ruleName;
 	}
 
-	private Map readRules(String sectionName) {
+	private Map<String, String> readRules(String sectionName) {
 		try {
 			Wini ini = new Wini(new File(RULES_FILE));
 			Section section = ini.get(sectionName);
@@ -47,12 +47,13 @@ public class RulesReader {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	protected ImmutableMap<String, String> sort(Section section) {
 		Field field = findFieldInHierarchy(section, "_impl");
 
 		Map<String, List<String>> map;
 		try {
-			map = (Map) field.get(section);
+			map = (Map<String, List<String>>) field.get(section);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
